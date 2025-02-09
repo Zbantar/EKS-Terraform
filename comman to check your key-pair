@@ -1,0 +1,50 @@
+1. Verify the Key Pair Exists in AWS
+Run the following command to check if the key pair exists in AWS:
+aws ec2 describe-key-pairs --query "KeyPairs[*].KeyName" --region us-east-1
+If devops-zack.pem is not listed, it means the key pair does not exist.
+
+
+  2. Create a New Key Pair
+If the key pair does not exist, you need to create a new one.
+
+Option 1: Create Key Pair via AWS CLI Run:
+aws ec2 create-key-pair --key-name devops-zack --query "KeyMaterial" --output text > devops-zack.pem
+chmod 400 devops-zack.pem
+This creates a key pair named devops-zack and saves the private key in devops-zack.pem.
+
+
+Option 2: Create Key Pair via AWS Console
+
+Open the AWS Management Console.
+Go to EC2 > Key Pairs.
+Click Create Key Pair.
+Name it devops-zack and download the .pem file.
+3. Update Your Terraform Variable
+If you're using a Terraform variable for the SSH key, ensure var.ssh_key_name matches the newly created key pair:
+
+h
+Copy
+Edit
+variable "ssh_key_name" {
+  default = "devops-zack"
+}
+Or directly update the remote_access section in your Terraform file:
+
+hcl
+Copy
+Edit
+remote_access {
+  ec2_ssh_key = "devops-zack"
+  source_security_group_ids = [aws_security_group.devopsshack_node_sg.id]
+}
+4. Retry Terraform Deployment
+Run:
+
+sh
+Copy
+Edit
+terraform apply
+This should now work without the KeyPair not found error.
+
+
+  
