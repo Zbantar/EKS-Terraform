@@ -47,4 +47,13 @@ terraform apply
 This should now work without the KeyPair not found error.
 
 
+
+
+kubectl create ns argocd
+kubectl apply -n argocd -f
+https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifest/install.yaml
+edit svc
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath=”{.data.password}”
+aws eks –region ap-south-1 update-kubeconfig –name devopsshack-cluster
+
   
