@@ -50,8 +50,9 @@ This should now work without the KeyPair not found error.
 
 
 kubectl create ns argocd
-kubectl apply -n argocd -f
-https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifest/install.yaml
+
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.7/manifests/install.yaml
+   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 edit svc
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath=”{.data.password}”
 aws eks --region us-east-1 update-kubeconfig --name devopsshack-cluster
